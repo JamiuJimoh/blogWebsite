@@ -1,5 +1,5 @@
 //jshint esversion:8
-
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
@@ -19,7 +19,9 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-mongoose.connect('mongodb://localhost:27017/blogDB', {
+
+const password = process.env.BLOGDB;
+mongoose.connect(`mongodb+srv://Jamiu:${password}@cluster0.xh8t0.mongodb.net/blogDB`, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useFindAndModify: false
@@ -86,6 +88,9 @@ app.post('/delete', (req, res) => {
 	});
 });
 
-app.listen(3000, function() {
+const port = process.env.PORT || 3000;
+const ip = process.env.IP || '0.0.0.0';
+
+app.listen(port, ip, function() {
 	console.log('Server started on port 3000');
 });
